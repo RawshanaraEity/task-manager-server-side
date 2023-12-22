@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.bkpsd7x.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -42,6 +42,16 @@ async function run() {
         const result = await taskCollection.find().toArray();
         res.send(result)
     })
+
+
+
+    app.delete('/tasks/:id', async(req, res) =>{
+        const id = req.params.id
+        const query = {_id:new ObjectId(id)}
+        const result = await taskCollection.deleteOne(query)
+        res.send(result)
+    })
+
 
 
 
